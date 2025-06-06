@@ -152,6 +152,8 @@ class ZeroMathArgs(PPOArgs):
 
 class ZeroMathActor(PPOActor):
     def __init__(self, ipc_server, vllm_args, args: ZeroMathArgs) -> None:
+        if args.bf16 == False:
+            vllm_args["dtype"] = "float16"
         super().__init__(ipc_server, vllm_args, args)
 
         self.oracle = MATHOracle(

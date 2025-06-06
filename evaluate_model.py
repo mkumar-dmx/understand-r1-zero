@@ -94,7 +94,7 @@ def main(
         model_name,
         swap_space=32,
         max_model_len=max_model_len,
-        dtype="bfloat16",
+        dtype="float16",
         enable_prefix_caching=True,
     )
 
