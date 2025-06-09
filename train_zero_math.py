@@ -89,7 +89,7 @@ class MATHOracle(RewardOracleBase, PreferenceOracleBase):
             math_reward_fn, fast=verifier_version == "fast"
         )
         # Process pool is used to enable the timeout mechanism for answer grading in our distributed training setup.
-        self.mp_pool = Pool(2)
+        self.mp_pool = Pool(1)
 
     def get_reward(
         self,
@@ -104,7 +104,7 @@ class MATHOracle(RewardOracleBase, PreferenceOracleBase):
         rewards = []
         infos = []
         for resp, ref in zip(responses, references):
-            res = self.mp_pool.apply_async(self.math_reward_fn, (resp, ref))
+            res = self.mp_pool.map(self.math_reward_fn, (resp, ref))
             try:
                 info, r = res.get(timeout=1)
                 rewards.append(r)
